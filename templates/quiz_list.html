@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Kuis{% endblock %}
+{% block meta_description %}Selesaikan semua kuis mulai dari jaringan, pemgrograman, serta sistem operasi dan dapatkan sertifikat gratis!!{% endblock %}
+{% block og_title %}Quiz online gratis | Eksa Shop{% endblock %}
+{% block og_description %}{{ self.meta_description() }}{% endblock %}
+{% block og_url %}{{ request.url }}{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4 text-primary text-center animate__animated animate__fadeInUp" style="font-size: 2rem; font-weight: bold;"><span class="box-phone-highlight">Semua Quiz</span></h1>
+
+    {% include 'includes/flash.html' %}
+
+    {# START: Filter & Search Section #}
+    <div class="mb-5 p-3 bg-white rounded-3 shadow-sm animate__animated animate__fadeInUp">
+        
+        {# Filter Kategori #}
+        <h5 class="mb-3">Filter Berdasarkan Kategori:</h5>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a href="{{ url_for('quiz_list', category='all', q=search_query) }}" class="btn {% if selected_category == 'all' or selected_category == None %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
+                <i class="fas fa-th-large"></i> Semua Kategori
+            </a>
+            
+            {# Looping menampilkan semua kategori unik yang dikirim dari Flask #}
+            {% for category_name in all_categories %}
+                <a href="{{ url_for('quiz_list', category=category_name, q=search_query) }}" class="btn {% if selected_category == category_name %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill">
+                    {{ category_name }}
+                </a>
+            {% endfor %}
+        </div>
+
+        {# Search Form #}
+        <h5 class="mb-3">Cari Kuis:</h5>
+        <form action="{{ url_for('quiz_list') }}" method="get" class="d-flex">
+            {# Input hidden untuk mempertahankan filter kategori saat mencari #}
+            <input type="hidden" name="category" value="{{ selected_category if selected_category != 'all' and selected_category != None else '' }}">
+            <input type="text" name="q" class="form-control me-2 rounded-pill" placeholder="Cari berdasarkan judul atau deskripsi..." value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary rounded-pill"><i class="fas fa-search"></i> Cari</button>
+            
+            {# Tombol Reset/Hapus Filter #}
+            {% if search_query or selected_category != 'all' and selected_category != None %}
+                <a href="{{ url_for('quiz_list') }}" class="btn btn-outline-secondary ms-2 rounded-pill" title="Hapus Filter"><i class="fas fa-times-circle"></i> Reset Filter</a>
+            {% endif %}
+        </form>
+    </div>
+    {# END: Filter & Search Section #}
+
+    {% if all_quizzes %}
+        {% for category_name, quizzes in quizzes_by_category.items() %}
+            <div class="mb-5">
+                <h2 class="border-bottom pb-2 mb-3 text-primary" style="font-size: 2rem; font-weight: bold;">{{ category_name }}</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for quiz in quizzes %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-primary">{{ quiz.title }}</h5>
+                                <p class="card-text text-muted small mb-3">
+                                    Total Soal: {{ quiz.question_count }} | Min. Skor Lulus: {{ quiz.min_score }}%
+                                </p>
+                                <p class="card-text flex-grow-1">{{ quiz.description | nl2br }}</p>
+
+                                {% if quiz.question_count > 0 %}
+                                    <a href="{{ url_for('start_quiz', quiz_id=quiz._id) }}" class="mt-auto btn btn-success">
+                                        <i class="fas fa-play me-2"></i> Mulai Kuis
+                                    </a>
+                                {% else %}
+                                    <button class="mt-auto btn btn-secondary" disabled>
+                                        <i class="fas fa-lock me-2"></i> Belum Tersedia
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12 text-center">
+            <p class="lead">Tidak ada kuis yang ditemukan sesuai kriteria Anda.</p>
+            {% if not search_query and selected_category == 'all' %}
+                <div class="alert alert-info text-center">
+                    Belum ada kuis yang tersedia saat ini.
+                </div>
+            {% else %}
+                <a href="{{ url_for('quiz_list', category='all', q='') }}" class="btn btn-secondary mt-3 rounded-pill">
+                    <i class="fas fa-undo"></i> Tampilkan semua kuis
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

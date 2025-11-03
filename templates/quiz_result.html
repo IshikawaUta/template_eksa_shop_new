@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Hasil Kuis: {{ result.quiz_title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="card-header {% if result.passed %}bg-success{% else %}bg-danger{% endif %} text-white text-center">
+            <h1 class="h3 mb-0">Hasil Kuis: {{ result.quiz_title }}</h1>
+        </div>
+        <div class="card-body text-center">
+            <h2 class="mb-4">Skor Anda: 
+                <span class="display-3 fw-bold {% if result.passed %}text-success{% else %}text-danger{% endif %}">
+                    {{ result.score }}%
+                </span>
+            </h2>
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total Pertanyaan:
+                            <span class="badge bg-primary rounded-pill">{{ result.total_questions }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Jawaban Benar:
+                            <span class="badge bg-success rounded-pill">{{ result.correct_answers }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Skor Minimal Lulus:
+                            <span class="badge bg-info rounded-pill">{{ result.min_score }}%</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if result.passed %}
+                <div class="alert alert-success mt-4">
+                    <h4 class="alert-heading"><i class="fas fa-check-circle me-2"></i> Selamat, Anda Lulus!</h4>
+                    <p>Skor Anda ({{ result.score }}%) telah melampaui skor minimal ({{ result.min_score }}%).</p>
+                    <hr>
+                    {% if result.certificate_url %}
+                        <a href="{{ result.certificate_url }}" class="btn btn-warning btn-lg">
+                            <i class="fas fa-file-pdf me-2"></i> Unduh Sertifikat
+                        </a>
+                    {% else %}
+                        <p class="mb-0">Fitur Pembuatan Sertifikat sedang dalam pengembangan dan akan segera tersedia.</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="alert alert-danger mt-4">
+                    <h4 class="alert-heading"><i class="fas fa-times-circle me-2"></i> Maaf, Anda Belum Lulus.</h4>
+                    <p>Skor Anda ({{ result.score }}%) belum mencapai skor minimal ({{ result.min_score }}%). Coba lagi!</p>
+                </div>
+            {% endif %}
+
+            <div class="mt-5">
+                <a href="{{ url_for('quiz_list') }}" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-list me-2"></i> Kembali ke Daftar Kuis
+                </a>
+                {% if not result.passed %}
+                <a href="{{ url_for('start_quiz', quiz_id=result.quiz_id) }}" class="btn btn-info">
+                    <i class="fas fa-redo-alt me-2"></i> Coba Lagi
+                </a>
+                {% endif %}
+            </div>
+            
+            <hr class="my-5">
+
+            <h3 class="text-start mb-4 text-primary"><i class="fas fa-file-alt me-2"></i> Detail Jawaban Anda</h3>
+
+            {% if result.detailed_answers %}
+                <div class="list-group text-start">
+                    {% for detail in result.detailed_answers %}
+                        {% set card_class = 'border-success' if detail.is_correct else 'border-danger' %}
+                        {% set icon_class = 'fas fa-check-circle text-success' if detail.is_correct else 'fas fa-times-circle text-danger' %}
+                        
+                        <div class="card mb-4 {{ card_class }} shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center bg-light">
+                                <h5 class="mb-0">Soal {{ loop.index }}</h5>
+                                <i class="{{ icon_class }} fa-lg"></i>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-3 fw-bold">{{ detail.question_text | nl2br }}</p>
+
+                                <div class="mb-2">
+                                    <span class="badge bg-primary me-2">Jawaban Anda:</span>
+                                    <span class="fw-bold {% if detail.is_correct %}text-success{% else %}text-danger{% endif %}">
+                                        {{ detail.user_answer }}
+                                    </span>
+                                </div>
+
+                                {% if not detail.is_correct %}
+                                    <div class="mb-0">
+                                        <span class="badge bg-success me-2">Jawaban Benar:</span>
+                                        <span class="fw-bold text-success">{{ detail.correct_answer }}</span>
+                                    </div>
+                                {% endif %}
+                                
+                                <h6 class="mt-3 mb-2 text-muted">Semua Pilihan:</h6>
+                                <ul class="list-group list-group-flush small">
+                                    {% for option in detail.options %}
+                                        {% set option_class = '' %}
+                                        {# Tandai Jawaban Benar #}
+                                        {% if option == detail.correct_answer %}
+                                            {% set option_class = 'list-group-item-success fw-bold' %}
+                                        {# Tandai Jawaban Salah yang Dipilih Pengguna #}
+                                        {% elif option == detail.user_answer and not detail.is_correct %}
+                                            {% set option_class = 'list-group-item-danger fw-bold' %}
+                                        {% endif %}
+                                        <li class="list-group-item {{ option_class }}">
+                                            {% if option == detail.correct_answer %}<i class="fas fa-check me-2 text-success"></i>{% endif %}
+                                            {% if option == detail.user_answer and not detail.is_correct %}<i class="fas fa-times me-2 text-danger"></i>{% endif %}
+                                            {{ option }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning mt-4">Detail jawaban tidak tersedia.</div>
+            {% endif %}
+            </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Pusat Bantuan{% endblock %}
+{% block meta_description %}Pusat bantuan dan informasi untuk para pengguna!!{% endblock %}
+{% block og_title %}Pusat Bantuan | Eksa Shop{% endblock %}
+{% block og_description %}{{ self.meta_description() }}{% endblock %}
+{% block og_url %}{{ request.url }}{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row text-center mb-5">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold text-primary text-help animate__animated animate__fadeInUp">Temukan semua informasi yang Anda butuhkan tentang <br> <span class="multi-platform-highlight">Layanan Pembuatan Website</span> Eksa Shop di sini.</h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-3 d-none d-lg-block animate__animated animate__fadeInUp">
+            <div class="sticky-top" style="top: 100px;">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item active bg-navy">
+                        <a class="text-white text-decoration-none" href="#general-questions">Pertanyaan Umum</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-success text-decoration-none" href="#warranty-policy">Kebijakan Dukungan Teknis</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div id="general-questions" class="mb-5 animate__animated animate__fadeInUp">
+                <h3 class="fw-bold text-primary-gradient mb-3">Pertanyaan Umum:</h3>
+                <p class="text-muted">Temukan semua informasi yang Anda butuhkan tentang Layanan Pembuatan Website Eksa Shop di sini. Jika Anda tidak menemukan jawaban yang Anda cari, silakan hubungi tim kami yang ramah melalui WhatsApp atau Telegram.</p>
+
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                1. Apa saja Layanan Utama Eksa Shop?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Eksa Shop adalah penyedia layanan pengembangan solusi digital, berfokus pada pembuatan website (korporat, toko online, portofolio) dan aplikasi kustom (berbasis web atau mobile).
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                2. Bagaimana Proses Pembuatan Website di Eksa Shop?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Proses kami dimulai dari konsultasi dan pengumpulan kebutuhan, dilanjutkan dengan desain (UI/UX), pengembangan (coding), pengujian, hingga peluncuran dan dukungan teknis pasca-rilis.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                3. Siapa yang cocok menggunakan Layanan Eksa Shop?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <p>Layanan kami cocok untuk:</p>
+                                <ul>
+                                    <li>Pemilik usaha kecil dan menengah (UMKM).</li>
+                                    <li>Perusahaan rintisan (startup) dan korporasi.</li>
+                                    <li>Profesional atau individu yang membutuhkan portofolio online.</li>
+                                    <li>Siapa saja yang membutuhkan kehadiran digital yang berkualitas dan fungsional.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                4. Apa keuntungan menggunakan Layanan Pembuatan Website Eksa Shop?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Keuntungannya termasuk memiliki website yang profesional, responsif (mobile-friendly), dioptimalkan untuk mesin pencari (SEO), dan mendapatkan dukungan teknis penuh setelah peluncuran.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                5. Berapa lama waktu yang dibutuhkan untuk membuat website?
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Durasi proyek bervariasi tergantung kompleksitas. Website standar (portofolio/profil perusahaan) biasanya memakan waktu 2-4 minggu, sementara proyek e-commerce atau aplikasi kustom bisa memakan waktu 1-3 bulan.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSix">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                6. Apakah Eksa Shop menyediakan Hosting dan Domain?
+                            </button>
+                        </h2>
+                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Ya, semua paket pembuatan website kami sudah termasuk saran, registrasi, dan konfigurasi hosting serta domain selama satu tahun pertama.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="warranty-policy" class="mt-5 scroll-reveal">
+                <h3 class="fw-bold text-primary-gradient mb-3">Kebijakan Dukungan Teknis:</h3>
+                <div class="accordion" id="warrantyAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="warrantyHeadingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#warrantyCollapseOne" aria-expanded="true" aria-controls="warrantyCollapseOne">
+                                1. Apa yang termasuk dalam Dukungan Teknis?
+                            </button>
+                        </h2>
+                        <div id="warrantyCollapseOne" class="accordion-collapse collapse show" aria-labelledby="warrantyHeadingOne" data-bs-parent="#warrantyAccordion">
+                            <div class="accordion-body">
+                                Dukungan teknis kami mencakup perbaikan bug atau error yang muncul setelah peluncuran yang disebabkan oleh kesalahan coding tim kami. Kami memastikan website berfungsi sesuai spesifikasi yang disepakati. Harap dicatat bahwa dukungan tidak mencakup penambahan fitur baru atau perubahan desain.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="warrantyHeadingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warrantyCollapseTwo" aria-expanded="false" aria-controls="warrantyCollapseTwo">
+                                2. Berapa lama periode Dukungan Teknis gratis berlaku?
+                            </button>
+                        </h2>
+                        <div id="warrantyCollapseTwo" class="accordion-collapse collapse" aria-labelledby="warrantyHeadingTwo" data-bs-parent="#warrantyAccordion">
+                            <div class="accordion-body">
+                                Kami memberikan dukungan teknis dan perbaikan bug gratis selama 3 bulan setelah peluncuran proyek. Setelah periode ini, layanan dukungan tersedia melalui kontrak pemeliharaan bulanan/tahunan.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="warrantyHeadingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warrantyCollapseThree" aria-expanded="false" aria-controls="warrantyCollapseThree">
+                                3. Bagaimana cara mengajukan permintaan dukungan?
+                            </button>
+                        </h2>
+                        <div id="warrantyCollapseThree" class="accordion-collapse collapse" aria-labelledby="warrantyHeadingThree" data-bs-parent="#warrantyAccordion">
+                            <div class="accordion-body">
+                                Untuk mengajukan permintaan dukungan, harap hubungi tim layanan pelanggan kami melalui email atau WhatsApp dengan menyertakan deskripsi detail masalah. Kami akan merespons permintaan Anda dalam waktu 1x24 jam kerja.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="warrantyHeadingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warrantyCollapseFour" aria-expanded="false" aria-controls="warrantyCollapseFour">
+                                4. Apakah ada biaya untuk perbaikan bug yang tercakup dalam dukungan?
+                            </button>
+                        </h2>
+                        <div id="warrantyCollapseFour" class="accordion-collapse collapse" aria-labelledby="warrantyHeadingFour" data-bs-parent="#warrantyAccordion">
+                            <div class="accordion-body">
+                                Tidak ada biaya tambahan untuk perbaikan bug yang disebabkan oleh kesalahan internal tim kami dalam periode dukungan gratis. Biaya hanya berlaku jika permintaan melibatkan penambahan fitur baru di luar ruang lingkup awal.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="warrantyHeadingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warrantyCollapseFive" aria-expanded="false" aria-controls="warrantyCollapseFive">
+                                5. Apa yang harus dilakukan jika terjadi error kritis pasca-peluncuran?
+                            </button>
+                        </h2>
+                        <div id="warrantyCollapseFive" class="accordion-collapse collapse" aria-labelledby="warrantyHeadingFive" data-bs-parent="#warrantyAccordion">
+                            <div class="accordion-body">
+                                Jika terjadi error kritis, segera hubungi kami. Kami akan melakukan diagnosis cepat dan mengutamakan perbaikan (hotfix) untuk memulihkan fungsionalitas utama website sesegera mungkin.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="warrantyHeadingSix">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#warrantyCollapseSix" aria-expanded="false" aria-controls="warrantyCollapseSix">
+                                6. Apakah dukungan teknis berlaku jika kode dimodifikasi pihak lain?
+                            </button>
+                        </h2>
+                        <div id="warrantyCollapseSix" class="accordion-collapse collapse" aria-labelledby="warrantyHeadingSix" data-bs-parent="#warrantyAccordion">
+                            <div class="accordion-body">
+                                Dukungan teknis akan menjadi terbatas atau batal jika kode sumber website telah dimodifikasi, diubah, atau diintervensi oleh pihak ketiga tanpa persetujuan tertulis dari Eksa Shop.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

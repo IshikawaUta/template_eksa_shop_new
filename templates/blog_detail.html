@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block head_meta %}
+    <meta name="description" content="{{ post.content | striptags | truncate(150, True, '...') }}">
+    <meta property="og:title" content="{{ post.title }}" />
+    <meta property="og:description" content="{{ post.content | striptags | truncate(150, True, '...') }}" />
+    <meta property="og:image" content="{{ post.image_url if post.image_url else 'https://placehold.co/1200x630/cccccc/333333?text=Gambar+Produk' }}" />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta property="og:type" content="blog" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ post.title }}">
+    <meta name="twitter:description" content="{{ post.content | striptags | truncate(150, True, '...') }}">
+    <meta name="twitter:image" content="{{ post.image_url if post.image_url else 'https://placehold.co/1200x630/cccccc/333333?text=Gambar+Produk' }}">
+{% endblock %}
+
+{% macro render_comments(comments, post_id, is_user_logged_in) %}
+    {% for comment in comments %}
+    <div class="card mb-3 border-light shadow-sm mt-3">
+        <div class="card-body p-3">
+            <h6 class="card-subtitle mb-2">
+                <i class="fas fa-user-circle"></i> 
+                <strong>{{ comment.user_name }}</strong>
+                <small class="text-muted float-end">{{ comment.created_at.strftime('%d %B %Y, %H:%M') }}</small>
+            </h6>
+            <p class="card-text">{{ comment.comment_body | nl2br }}</p>
+
+            {% if is_user_logged_in %}
+            <button class="btn btn-sm btn-link text-primary p-0" type="button" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ comment._id }}" aria-expanded="false" aria-controls="replyForm-{{ comment._id }}">
+                <i class="fas fa-reply"></i> Balas
+            </button>
+            {% endif %}
+
+            {% if is_user_logged_in %}
+            <div class="collapse mt-2" id="replyForm-{{ comment._id }}">
+                <div class="card card-body p-3 bg-light">
+                    <form action="{{ url_for('submit_blog_comment', post_id=post_id) }}" method="POST">
+                        <input type="hidden" name="parent_id" value="{{ comment._id }}">
+                        <div class="mb-2">
+                            <textarea class="form-control form-control-sm" name="comment_body" rows="2" placeholder="Balas {{ comment.user_name }}..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Kirim Balasan</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if comment.replies %}
+                <div class="ms-4 mt-3 border-start ps-3"> 
+                    {{ render_comments(comment.replies, post_id, is_user_logged_in) }}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    {% endfor %}
+{% endmacro %}
+
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 scroll-reveal">
+            <article class="bg-white shadow-lg border-0 rounded-4 p-4 p-md-5">
+                {% if post.image_url %}
+                <img src="{{ post.image_url }}" class="img-fluid rounded mb-4" alt="{{ post.title }}">
+                {% endif %}
+                <h1 class="text-primary-gradient mb-3">{{ post.title }}</h1>
+                <p class="text-muted small">
+                    <i class="fas fa-user"></i> Ditulis oleh {{ post.author }} pada {{ post.created_at.strftime('%d %B %Y') }}
+                </p>
+                <hr class="mb-4">
+                <div class="blog-post-content fs-5 lh-base">
+                    {{ post.content | nl2br }}
+                </div>
+            </article>
+
+            <div class="mt-5 p-4 bg-light rounded-4 shadow-sm">
+                <h2 class="text-primary-gradient mb-4">Komentar ({{ comments | length }})</h2>
+
+                {% if is_user_logged_in %}
+                <div class="card shadow-sm p-4 mb-5 border-0">
+                    <h5 class="card-title">Tinggalkan Komentar Utama</h5>
+                    <form action="{{ url_for('submit_blog_comment', post_id=post._id) }}" method="POST">
+                        <input type="hidden" name="parent_id" value=""> 
+                        <div class="mb-3">
+                            <textarea class="form-control" name="comment_body" rows="3" placeholder="Tulis komentar Anda di sini..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kirim Komentar</button>
+                    </form>
+                </div>
+                {% else %}
+                <div class="alert alert-info text-center mb-5" role="alert">
+                    <a href="{{ url_for('login') }}" class="alert-link fw-bold">Login</a> untuk dapat memberikan komentar atau balasan.
+                </div>
+                {% endif %}
+
+                {% if comments %}
+                    {{ render_comments(comments, post._id, is_user_logged_in) }}
+                {% else %}
+                    <p class="alert alert-warning text-center">Belum ada komentar untuk postingan ini. Jadilah yang pertama berkomentar!</p>
+                {% endif %}
+            </div>
+            
+            <div class="mt-4 text-center scroll-reveal">
+                <a href="{{ url_for('blog') }}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left"></i> Kembali ke Blog</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+
+{% block title %}solusi pembuatan website profesional{% endblock %}
+
+{% block content %}
+    <div class="row text-center mb-5 hero-section position-relative overflow-hidden">
+        <div class="col-12 hero-content-wrapper">
+            <h1 class="main-hero-title animate__animated animate__fadeInDown">
+                Web & App Solution <br><span class="multi-platform-highlight">Eksa Shop</span>
+            </h1>
+            <p class="hero-description animate__animated animate__fadeInUp">
+                Solusi Digital Terbaik untuk Bisnis Anda: Website Profesional & Template Aplikasi Modern
+            </p>
+
+            <div class="hero-buttons mt-4 animate__animated animate__fadeInUp animate__delay-1s">
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg rounded-pill custom-btn-buy me-2">
+                    <i class="fas fa-shopping-bag me-2"></i> Buy Now
+                </a>
+                <a href="{{ url_for('product') }}" class="btn btn-outline-primary btn-lg rounded-pill custom-btn-learn">
+                    <i class="fas fa-box-open me-2"></i> Product
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile-none" style="background-color: #e4e4e454;">
+    <div class="container py-3">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-lg-start mb-4 mb-lg-0 scroll-reveal">
+                <h2 class="fw-bold text-primary">Akses Penuh di <span class="box-phone-highlight">Semua Perangkat</span></h2>
+                <p class="lead text-navy">
+                    Semua solusi web dan aplikasi dari Eksa Shop dirancang dengan prinsip Mobile-First. 
+                    Pastikan bisnis Anda tampil sempurna, cepat, dan mudah digunakan, baik di desktop, tablet, maupun smartphone.
+                    Desain yang responsif menjamin pengalaman pengguna (UX) yang optimal di mana saja.
+                </p>
+                <a href="{{ url_for('website_services') }}" class="btn btn-outline-primary rounded-pill mt-3">
+                    Mulai Sekarang <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="col-lg-6 d-none d-lg-block scroll-reveal">
+                <div class="d-flex justify-content-center align-items-end position-relative" style="height: 350px;">
+                    <img src="{{ url_for('static', filename='img/eksa_desktop.png') }}" alt="Eksa Shop Desktop View" class="img-fluid position-absolute" style="max-height: 100%; width: auto; bottom: 0; left: 60%; transform: translateX(-65%); z-index: 10;">
+                    <img src="{{ url_for('static', filename='img/eksa_mobile.png') }}" alt="Eksa Shop Mobile View" class="img-fluid position-absolute" style="max-height: 80%; width: auto; bottom: 30px; left: 60%; transform: translateX(5%); z-index: 20; max-width: 180px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="bg-toska-100">
+    <div class="container flex-grow-1">
+    <div class="text-center mb-4 pt-4 scroll-reveal">
+        <h2 class="fw-bold text-primary"><span class="box-phone-highlight">Produk</span> Unggulan Kami</h2>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% if products %}
+            {% for product in products %}
+            <div class="col scroll-reveal">
+                <div class="card h-100 shadow-sm rounded-3">
+                    {% if product.image_urls %} {# Cek apakah ada daftar gambar #}
+                        <img src="{{ product.image_urls[0] }}" class="card-img-top p-3 rounded-top-3 lazyload" alt="{{ product.name }}" style="max-height: 200px; object-fit: contain;border-bottom: 1px solid #216bc0;">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/logo.jpg') }}" class="card-img-top p-3 rounded-top-3 lazyload" alt="Logo Eksa Shop" style="max-height: 200px; object-fit: contain;border-bottom: 1px solid #216bc0;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">{{ product.name }}</h5>
+                        <p class="card-text text-success fw-bold">Rp {{ "{:,.2f}".format(product.price) }}</p>
+                        {# Tampilkan kategori jika ada #}
+                        {% if product.category %}
+                            <p class="card-text text-muted small"><span class="badge bg-secondary"><i class="fas fa-folder"></i> {{ product.category }}</span></p>
+                        {% endif %}
+                        <p class="card-text text-muted flex-grow-1">{{ (product.description[:100] + '...') | nl2br }}</p>
+                        <div class="mt-3 d-flex flex-wrap align-items-center gap-2">
+                            <a href="{{ url_for('product_detail', id=product._id) }}" class="btn btn-outline-primary btn-sm rounded-pill">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </a>
+                            {% if product.os or product.specifications or product.packages or product.advantages or product.notes %}
+                            {% endif %}
+                            {% if product.demo_url %}
+                                <a href="{{ product.demo_url }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill">
+                                    <i class="fas fa-play-circle me-2"></i>Demo Produk
+                                </a>
+                            {% endif %}
+                            <form action="{{ url_for('add_to_cart', product_id=product._id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-primary btn-sm rounded-pill">
+                                    <i class="fas fa-cart-plus"></i> Beli Sekarang
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center">
+                <p class="lead">Saat ini belum ada produk yang ditampilkan.</p>
+                {% if not search_query and selected_category == 'all' %}
+                    <a href="{{ url_for('add_product') }}" class="btn btn-primary rounded-pill mt-3">
+                        <i class="fas fa-plus"></i> Tambahkan produk sekarang!
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('index', category='all', q='') }}" class="btn btn-secondary mt-3 rounded-pill">
+                        <i class="fas fa-undo"></i> Tampilkan semua produk
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+        <a href="{{ url_for('product') }}" class="btn btn-outline-primary mt-3 mb-4 rounded-pill">
+            Lihat Semua Produk
+        </a>
+    </div>
+    </div>
+
+<div class="container my-5">
+    <div class="text-center mb-5 scroll-reveal">
+        <h2 class="fw-bold text-primary">Layanan Pengembangan <span class="box-phone-highlight">Eksa Shop</span></h2>
+        <p class="lead text-muted">Kami menawarkan layanan pembuatan website dan aplikasi kustom yang dirancang untuk merampingkan operasi bisnis, dan meningkatkan kehadiran digital Anda.</p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col scroll-reveal">
+            <div class="card h-100 shadow-sm rounded-3">
+                <div class="card-body d-flex flex-column text-center">
+                    <h5 class="card-title text-navy fw-bold">PAKET WEBSITE STANDAR</h5>
+                    <p class="card-text text-muted small">Website Landing Page atau Company Profile Sederhana, Desain Responsif</p>
+                    <h4 class="mt-auto price-text-navy mb-3">Rp 100.000 <span class="fw-normal small text-muted">/Proyek</span></h4>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="fas fa-check text-success me-2"></i> Desain Responsif (Mobile Friendly)</li>
+                        <li><i class="fas fa-check text-success me-2"></i> 5 Halaman Dasar (Home, About, Contact, dll)</li>
+                        <li><i class="fas fa-times text-muted me-2"></i> Fitur E-commerce Kompleks</li>
+                        <li><i class="fas fa-times text-muted me-2"></i> Integrasi API Pihak Ketiga</li>
+                        <li><i class="fas fa-times text-muted me-2"></i> Custom CMS Level Lanjut</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Masa Revisi Singkat</li>
+                    </ul>
+                    <a href="https://wa.me/62895701060973?text=Halo%20Eksa%20Shop,%20saya%20tertarik%20dengan%20jasa%20pembuatan%20website.%20Bisa%20berikan%20informasi%20lebih%20lanjut?" class="btn btn-outline-navy btn-lg mt-auto rounded-pill">Konsultasi Gratis</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col scroll-reveal">
+            <div class="card h-100 shadow-sm rounded-3">
+                <div class="card-body d-flex flex-column text-center">
+                    <h5 class="card-title text-navy fw-bold">PAKET WEBSITE BISNIS PREMIUM</h5>
+                    <p class="card-text text-muted small">Website E-commerce atau Portal Informasi Lengkap dengan Fitur Custom</p>
+                    <h4 class="mt-auto price-text-navy mb-3">Rp 250.000 <span class="fw-normal small text-muted">/Proyek</span></h4>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="fas fa-check text-success me-2"></i> Desain & UX/UI Prioritas</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Fitur E-commerce Lengkap / Sistem Khusus</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Integrasi Pembayaran & Pengiriman</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Custom CMS User-Friendly</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Dukungan Teknis Penuh</li>
+                        <li><i class="fas fa-times text-muted me-2"></i> Pengembangan Aplikasi Mobile Native</li>
+                    </ul>
+                    <a href="https://wa.me/62895701060973?text=Halo%20Eksa%20Shop,%20saya%20tertarik%20dengan%20jasa%20pembuatan%20website.%20Bisa%20berikan%20informasi%20lebih%20lanjut?" class="btn btn-outline-navy btn-lg mt-auto rounded-pill">Ajukan Penawaran</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col scroll-reveal">
+            <div class="card h-100 shadow-sm rounded-3">
+                <div class="card-body d-flex flex-column text-center">
+                    <h5 class="card-title text-navy fw-bold">PENGEMBANGAN APLIKASI KUSTOM</h5>
+                    <p class="card-text text-muted small">Solusi Aplikasi Mobile (Android/iOS) atau Web/Sistem ERP Sesuai Kebutuhan Unik Anda</p>
+                    <h4 class="mt-auto price-text-navy mb-3">Mulai Rp 500.000 <span class="fw-normal small text-muted">/Proyek</span></h4>
+                    <ul class="list-unstyled text-start small">
+                        <li><i class="fas fa-check text-success me-2"></i> Analisis Kebutuhan Mendalam</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Desain Aplikasi Native atau Hybrid</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Optimasi Kinerja dan Keamanan</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Integrasi API Pihak Ketiga & Backend Khusus</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Proses QA (Quality Assurance) Komprehensif</li>
+                        <li><i class="fas fa-check text-success me-2"></i> Peluncuran ke App Store/Play Store (opsional)</li>
+                    </ul>
+                    <a href="https://wa.me/62895701060973?text=Halo%20Eksa%20Shop,%20saya%20tertarik%20dengan%20jasa%20pembuatan%20website.%20Bisa%20berikan%20informasi%20lebih%20lanjut?" class="btn btn-outline-navy btn-lg mt-auto rounded-pill">Konsultasikan Ide Anda</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="py-5 bg-toska-200">
+    <div class="container">
+        <div class="text-center mb-5 scroll-reveal">
+            <h2 class="text-primary fw-bold"><span class="box-phone-highlight">Kisah</span> Sukses Klien Kami</h2>
+            <p class="section-subtitle text-muted">Kepercayaan klien adalah bukti kualitas layanan kami dalam mewujudkan solusi digital yang efektif.</p>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4 scroll-reveal">
+                <div class="testimonial-card p-4 h-100">
+                    <p class="testimonial-quote">Website baru ini bukan hanya tampilan, tetapi juga senjata rahasia saya untuk meningkatkan kredibilitas bisnis. Layanan Eksa Shop sangat profesional!</p>
+                    <div class="d-flex align-items-center justify-content-center mt-4">
+                        <i class="fas fa-user p-3" style="background-color: #000080; border-radius: 50%; margin-right: 1rem; color: #fff;"></i>
+                        <div class="text-start">
+                            <h6 class="testimonial-name mb-0">Rina S.</h6>
+                            <small class="testimonial-role text-muted">Pemilik UMKM</small>
+                        </div>
+                    </div>
+                    <div class="testimonial-stat mt-4">
+                        <div class="animated-number stat-number" data-target="80">0</div>
+                        <p class="stat-description text-muted">Peningkatan kunjungan website</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 scroll-reveal">
+                <div class="testimonial-card p-4 h-100">
+                    <p class="testimonial-quote">Template aplikasi dari Eksa Shop mempercepat proses pengembangan kami, hemat waktu dan biaya. Sangat mudah diimplementasikan.</p>
+                    <div class="d-flex align-items-center justify-content-center mt-4">
+                        <i class="fas fa-user p-3" style="background-color: #000080; border-radius: 50%; margin-right: 1rem; color: #fff;"></i>
+                        <div class="text-start">
+                            <h6 class="testimonial-name mb-0">Andi K.</h6>
+                            <small class="testimonial-role text-muted">CTO Startup</small>
+                        </div>
+                    </div>
+                    <div class="testimonial-stat mt-4">
+                        <div class="animated-number stat-number" data-target="45">0</div>
+                        <p class="stat-description text-muted">Peningkatan efisiensi pengembangan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 scroll-reveal">
+                <div class="testimonial-card p-4 h-100">
+                    <p class="testimonial-quote">Aplikasi kustom yang dikembangkan benar-benar sesuai dengan kebutuhan operasional perusahaan kami. Sangat membantu merampingkan alur kerja.</p>
+                    <div class="d-flex align-items-center justify-content-center mt-4">
+                        <i class="fas fa-user p-3" style="background-color: #000080; border-radius: 50%; margin-right: 1rem; color: #fff;"></i>
+                        <div class="text-start">
+                            <h6 class="testimonial-name mb-0">Budi A.</h6>
+                            <small class="testimonial-role text-muted">Manajer Operasional</small>
+                        </div>
+                    </div>
+                    <div class="testimonial-stat mt-4">
+                        <div class="animated-number stat-number" data-target="60">0</div>
+                        <p class="stat-description text-muted">Peningkatan produktivitas tim</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    /**
+     * Fungsi untuk menganimasikan angka dari 0 ke nilai target.
+     * @param {HTMLElement} element - Elemen DOM yang berisi angka untuk dianimasikan.
+     */
+    const animateNumber = (element) => {
+        const target = parseInt(element.getAttribute('data-target'));
+
+        if (isNaN(target)) {
+            console.error('Data target tidak valid. Pastikan atribut data-target berisi angka.');
+            return;
+        }
+
+        const prefix = '+';
+        const suffix = ' %';
+
+        let current = 0;
+        const duration = 2000;
+        const frameRate = 10;
+        const increment = target / (duration / frameRate);
+
+        const timer = setInterval(() => {
+            current += increment;
+
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+
+            element.innerText = `${prefix} ${Math.floor(current)}${suffix}`;
+        }, frameRate);
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateNumber(entry.target);
+
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.5
+    });
+
+    document.querySelectorAll('.animated-number').forEach(numberElement => {
+        observer.observe(numberElement);
+    });
+});
+</script>
+{% endblock %}

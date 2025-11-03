@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Kerjakan Kuis: {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h1 class="h3 mb-0">{{ quiz.title }}</h1>
+        </div>
+        <div class="card-body">
+            <p class="lead text-center mb-4">{{ quiz.description | nl2br }}</p>
+            <p class="text-center text-muted">Jawablah semua {{ questions|length }} pertanyaan di bawah ini.</p>
+
+            <form method="POST" action="{{ url_for('submit_quiz', quiz_id=quiz._id) }}">
+                {% for question in questions %}
+                    <div class="card mb-4 border-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Soal {{ loop.index }}.</h5>
+                            <p class="card-text">{{ question.question_text | nl2br }}</p>
+                            
+                            <div class="form-group mt-3">
+                                {% for option in question.options %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" 
+                                               name="{{ question._id }}" 
+                                               id="q_{{ question._id }}_o_{{ loop.index }}" 
+                                               value="{{ option }}" 
+                                               required>
+                                        <label class="form-check-label" for="q_{{ question._id }}_o_{{ loop.index }}">
+                                            {{ option }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i> Selesaikan Kuis
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

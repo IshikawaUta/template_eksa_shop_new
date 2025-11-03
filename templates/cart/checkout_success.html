@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout Berhasil{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5 flex-grow-1">
+<div class="container text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4 text-primary fs-3 fw-bold animate__animated animate__fadeInUp">Pesanan <span class="box-phone-highlight">Berhasil!!!</span></h1>
+            <p class="lead fs-6">Terima kasih telah berbelanja di toko kami.</p>
+            <p>Pesanan Anda telah berhasil diproses.</p>
+            <p class="text-danger" style="font-weight: bold;">SIMPAN BUKTI PESANAN INI.</p>
+            
+            {% if order_id %}
+            <a href="{{ url_for('generate_receipt', order_id=order_id) }}" class="btn btn-primary fs-6 btn-lg mt-3 animate__animated animate__fadeInUp" download>
+                Unduh Struk PDF
+            </a>
+            {% endif %}
+
+            <div class="mt-5">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-success fs-6 animate__animated animate__fadeInUp">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
