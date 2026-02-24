@@ -1,5 +1,7 @@
 # Eksa Shop
 
+# test
+
 ![Tangkapan Layar Utama Proyek](https://res.cloudinary.com/dzsqaauqn/image/upload/v1760803019/Screenshot_2025-10-18_225615_nib3t1.jpg)
 
 Eksa Shop adalah aplikasi web e-commerce yang dibangun menggunakan **Flask** sebagai framework backend, **MongoDB** sebagai database, dan berbagai layanan eksternal seperti Imgur untuk unggah gambar dan Google OAuth untuk autentikasi. Aplikasi ini menyediakan fitur seperti manajemen produk, keranjang belanja, blog, kuis interaktif dengan sertifikat PDF, ulasan produk, dan integrasi email untuk pengiriman struk pembelian serta reset kata sandi.
@@ -182,4 +184,5 @@ MAIL_DEFAULT_SENDER="your_email@gmail.com"
 Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
 ## Kontak
+
 Untuk dukungan atau pertanyaan, hubungi melalui email: [komikers09@gmail.com](mailto:komikers09@gmail.com) atau WhatsApp: +62895701060973.
