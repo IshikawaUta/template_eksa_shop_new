@@ -1,7 +1,7 @@
 import os
 import re
 import io
-from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, session, Response, send_file, send_from_directory
 from flask_mail import Mail, Message
 from flask_caching import Cache
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -242,6 +242,10 @@ def inject_cart_count():
 
 PER_PAGE = 3
 BLOG_PER_PAGE = 6
+
+@app.route('/ads.txt')
+def ads():
+    return send_from_directory('static', 'ads.txt')
 
 @app.route('/')
 @cache.cached(timeout=2)
