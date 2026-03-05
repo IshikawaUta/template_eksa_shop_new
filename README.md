@@ -2,33 +2,24 @@
 
 ![Tangkapan Layar Utama Proyek](https://res.cloudinary.com/dzsqaauqn/image/upload/v1760803019/Screenshot_2025-10-18_225615_nib3t1.jpg)
 
-Eksa Shop adalah aplikasi web e-commerce yang dibangun menggunakan **Flask** sebagai framework backend, **MongoDB** sebagai database, dan berbagai layanan eksternal seperti Imgur untuk unggah gambar dan Google OAuth untuk autentikasi. Aplikasi ini menyediakan fitur seperti manajemen produk, keranjang belanja, blog, kuis interaktif dengan sertifikat PDF, ulasan produk, dan integrasi email untuk pengiriman struk pembelian serta reset kata sandi.
+Eksa Shop adalah aplikasi web e-commerce modern yang dibangun menggunakan framework **Flask** (Python) dan database **MongoDB**. Aplikasi ini dirancang sebagai solusi *all-in-one* untuk manajemen produk digital, layanan kustom website, sistem edukasi (kuis), hingga blog interaktif.
 
 ## Fitur Utama
-- **Manajemen Produk**: Admin dapat menambah, mengedit, dan menghapus produk dengan gambar yang diunggah ke Imgur. Mendukung multi-gambar, kategori, deskripsi detail, URL demo, spesifikasi, fitur, tools/framework, dan catatan.
-- **Keranjang Belanja dan Checkout**: Pengguna dapat menambahkan produk ke keranjang, mengupdate kuantitas, menghapus item, melihat subtotal, dan menyelesaikan pembelian melalui redirect WhatsApp dengan detail encoded. Struk PDF dikirim melalui email atau diunduh.
-- **Autentikasi Pengguna**: Mendukung login/registrasi manual, login dengan Google OAuth, dan setup admin pertama untuk pengaturan awal.
-- **Reset Kata Sandi**: Fitur pengaturan ulang kata sandi melalui email dengan tautan token aman (expired dalam 5 menit).
-- **Blog**: Admin dapat membuat, mengedit, dan menghapus postingan blog dengan gambar. Pengguna logged-in dapat menambahkan komentar dan balasan berjenjang.
-- **Kuis Interaktif**: Admin dapat mengelola kategori kuis, menambah/edit/hapus kuis dan soal (multiple choice dengan hingga 5 opsi). Pengguna dapat mengikuti kuis, melihat hasil skor dengan detail jawaban, dan unduh sertifikat PDF jika lulus (dibuat dengan ReportLab).
-- **Ulasan Produk**: Pengguna logged-in dapat memberikan ulasan dengan rating bintang; admin dapat membalas ulasan.
-- **Manajemen Kategori**: Admin dapat menambah, edit, dan hapus kategori untuk produk dan kuis, dengan hitungan jumlah kuis per kategori.
-- **SEO dan Aksesibilitas**: Menyediakan sitemap.xml dinamis (termasuk produk, blog, kuis) dan robots.txt untuk optimasi mesin pencari. Meta tags OG/Twitter untuk sharing.
-- **Integrasi Email**: Menggunakan Flask-Mail untuk mengirim struk pembelian, sertifikat kuis, dan email reset kata sandi.
-- **PDF Generation**: Menggunakan ReportLab untuk membuat struk pembelian dan sertifikat kuis dalam format PDF, dengan custom fonts (Roboto) dan logo.
-- **Caching**: Menggunakan Flask-Caching untuk meningkatkan performa pada halaman statis seperti 404.
+- **Manajemen Produk**: Sistem CRUD lengkap bagi admin dengan integrasi **Imgur API** untuk penyimpanan gambar. Mendukung deskripsi kaya (rich description), URL demo, spesifikasi teknis, dan fitur produk.
+- **Sistem Keranjang & Checkout**: Alur belanja yang mulus dengan fitur update kuantitas otomatis, kalkulasi subtotal, dan checkout yang terintegrasi dengan **WhatsApp API** (Encoded Data).
+- **Sistem Edukasi & Kuis**: Pengguna dapat mengikuti kuis interaktif berdasarkan kategori. Jika lulus, sistem akan secara otomatis men-generate **Sertifikat PDF** menggunakan ReportLab.
+- **Blog Interaktif**: Fitur manajemen artikel dengan dukungan komentar dan balasan berjenjang (threaded comments) untuk meningkatkan engagement pengguna.
+- **Autentikasi & Keamanan**: Login aman menggunakan **Google OAuth** atau sistem registrasi manual dengan enkripsi password Werkzeug. Dilengkapi fitur **Reset Password** via token email (timed-danger).
+- **PDF Generation**: Pembuatan struk pembelian dan sertifikat kuis secara dinamis dengan custom branding (Logo & Font Roboto).
+- **SEO & Search Engine Ready**: Optimasi mesin pencari menggunakan **Schema.org (JSON-LD)**, `sitemap.xml` dinamis, dan `robots.txt` yang optimal.
 
 ## Teknologi yang Digunakan
-- **Backend**: Flask (Python)
-- **Database**: MongoDB (dengan PyMongo)
-- **Autentikasi**: Google OAuth (google.oauth2), Werkzeug untuk hashing password
-- **Email**: Flask-Mail dengan SMTP Gmail
-- **PDF**: ReportLab untuk generate struk dan sertifikat
-- **Image Upload**: Imgur API
-- **Caching**: Flask-Caching
-- **Frontend**: Bootstrap 5, Animate.css, Font Awesome, Jinja2 templates
-- **Deployment**: Gunicorn untuk server, Vercel/Heroku support
-- **Lainnya**: itsdangerous untuk token timed, requests untuk API calls, math untuk pagination
+- **Backend**: Python 3.12, Flask
+- **Database**: MongoDB (Atlas/Local) via PyMongo
+- **Frontend**: Jinja2, Bootstrap 5, Font Awesome, Animate.css
+- **Integrasi API**: Imgur API (Images), Google OAuth 2.0 (Auth), Gmail SMTP (Mail)
+- **Library PDF**: ReportLab
+- **Performa**: Flask-Caching, Gunicorn (Production Server)
 
 ## Struktur File Lengkap
 Berikut adalah struktur direktori lengkap dari proyek ini. Struktur ini mencakup semua file dan folder utama yang diperlukan untuk menjalankan aplikasi.
@@ -45,8 +36,10 @@ eksa_shop_new/
 │   │   └── style.css         # Custom CSS untuk styling
 │   ├── js/
 │   │   └── main.js           # Custom JavaScript (e.g., cart, modal carousel)
-│   └── img/
-│       └── logo.png          # Logo untuk PDF dan branding
+│   ├── img/
+│   │   └── logo.png          # Logo untuk PDF dan branding
+│   ├── ads.txt
+│   └── llms.txt
 ├── templates/                # Template Jinja2 untuk frontend
 │   ├── includes/
 │   │   └── flash.html        # Snippet untuk flash messages
@@ -106,6 +99,7 @@ eksa_shop_new/
    pip install -r requirements.txt
    ```
 4. Buat file `.env` di root proyek dan isi dengan variabel dari contoh di dokumen (MONGO_URI, IMGUR_CLIENT_ID, SECRET_KEY, GOOGLE_CLIENT_ID/SECRET, MAIL_*).
+
 5. Jalankan aplikasi:
    ```
    ./run.sh  # Atau: flask run --debug
@@ -164,22 +158,13 @@ MAIL_DEFAULT_SENDER="your_email@gmail.com"
 6. **Struk PDF**: Struk akan dikirim ke email pengguna setelah checkout berhasil, atau diunduh melalui `/generate-receipt/<order_id>`.
 7. **Sertifikat Kuis**: Jika lulus, unduh via `/quiz_result/<result_id>` (PDF dengan details skor).
 
-## Catatan Penting
-- Pastikan semua variabel lingkungan diatur dengan benar di `.env` untuk menghindari kesalahan seperti kegagalan unggah gambar atau pengiriman email.
-- File font (`Roboto-Regular.ttf`, `Roboto-Bold.ttf`) dan logo (`logo.png`) harus ada di direktori proyek untuk pembuatan PDF.
-- Aplikasi menggunakan caching untuk meningkatkan performa, dengan timeout 2 detik untuk halaman yang sering diakses.
-- Di produksi, nonaktifkan route `/create_first_admin` setelah setup untuk keamanan.
-- Tanggal update terakhir: 18 Oktober 2025.
-
-## Kontribusi
-1. Fork repositori ini.
-2. Buat branch baru (`git checkout -b feature/nama-fitur`).
-3. Commit perubahan (`git commit -m 'Menambahkan fitur X'`).
-4. Push ke branch (`git push origin feature/nama-fitur`).
-5. Buat Pull Request.
-
 ## Lisensi
 Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
-## Kontak
-Untuk dukungan atau pertanyaan, hubungi melalui email: [komikers09@gmail.com](mailto:komikers09@gmail.com) atau WhatsApp: +62895701060973.
+## Kontak & Kontribusi
+
+Jika Anda ingin berkontribusi atau memiliki pertanyaan:
+
+* **Email**: komikers09@gmail.com
+* **WhatsApp**: [+62895701060973](https://www.google.com/search?q=https://wa.me/62895701060973)
+* **LinkedIn**: [Ishikawa Uta](https://www.linkedin.com/in/ishikawa-uta)
