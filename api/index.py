@@ -1331,30 +1331,30 @@ def terms_and_conditions():
 def sitemap():
     base_url = get_base_url()
 
+    def format_date(dt):
+        if not dt:
+            dt = datetime.now()
+        return dt.strftime('%Y-%m-%dT%H:%M:%S+07:00')
+
     static_urls = [
-        {'loc': url_for('index', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'daily', 'priority': '1.0'},
-        {'loc': url_for('login', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.8'},
-        {'loc': url_for('register', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.8'},
-        {'loc': url_for('view_cart', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'weekly', 'priority': '0.6'},
-        {'loc': url_for('product', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'weekly', 'priority': '0.6'},
-        {'loc': url_for('help_page', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.5'},
-        {'loc': url_for('website_services', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.5'},
-        {'loc': url_for('contact_page', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.5'},
-        {'loc': url_for('privacy_policy', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.5'},
-        {'loc': url_for('terms_and_conditions', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.5'},
-        {'loc': url_for('forgot_password', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'monthly', 'priority': '0.4'},
-        {'loc': url_for('blog', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'weekly', 'priority': '0.9'},
-        {'loc': url_for('quiz_list', _external=True), 'lastmod': datetime.now().isoformat(), 'changefreq': 'weekly', 'priority': '0.7'},
+        {'loc': url_for('index', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'daily', 'priority': '1.0'},
+        {'loc': url_for('product', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'weekly', 'priority': '0.6'},
+        {'loc': url_for('help_page', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'monthly', 'priority': '0.5'},
+        {'loc': url_for('website_services', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'monthly', 'priority': '0.5'},
+        {'loc': url_for('contact_page', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'monthly', 'priority': '0.5'},
+        {'loc': url_for('privacy_policy', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'monthly', 'priority': '0.5'},
+        {'loc': url_for('terms_and_conditions', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'monthly', 'priority': '0.5'},
+        {'loc': url_for('blog', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'weekly', 'priority': '0.9'},
+        {'loc': url_for('quiz_list', _external=True), 'lastmod': format_date(datetime.now()), 'changefreq': 'weekly', 'priority': '0.7'},
     ]
 
     product_urls = []
     try:
         products = products_collection.find({}, {'_id': 1, 'updated_at': 1})
         for product in products:
-            lastmod = product.get('updated_at', datetime.now()).isoformat()
             product_urls.append({
                 'loc': url_for('product_detail', id=str(product['_id']), _external=True),
-                'lastmod': lastmod,
+                'lastmod': format_date(product.get('updated_at')),
                 'changefreq': 'weekly',
                 'priority': '0.9'
             })
@@ -1365,27 +1365,23 @@ def sitemap():
     try:
         posts = posts_collection.find({}, {'_id': 1, 'updated_at': 1, 'created_at': 1})
         for post in posts:
-            lastmod_date = post.get('updated_at') or post.get('created_at') or datetime.now()
-            lastmod = lastmod_date.isoformat()
+            lastmod_date = post.get('updated_at') or post.get('created_at')
             blog_urls.append({
                 'loc': url_for('blog_detail', id=str(post['_id']), _external=True),
-                'lastmod': lastmod,
+                'lastmod': format_date(lastmod_date),
                 'changefreq': 'weekly',
                 'priority': '0.8'
             })
     except Exception as e:
         print(f"Error fetching blog posts for sitemap: {e}")
 
-    urls = static_urls + product_urls + blog_urls
-
     quiz_urls = []
     try:
         quizzes = quizzes_collection.find({}, {'_id': 1})
         for quiz in quizzes:
-            lastmod = datetime.now().isoformat() 
             quiz_urls.append({
                 'loc': url_for('start_quiz', quiz_id=str(quiz['_id']), _external=True),
-                'lastmod': lastmod,
+                'lastmod': format_date(datetime.now()), 
                 'changefreq': 'monthly',
                 'priority': '0.6'
             })
@@ -1399,12 +1395,9 @@ def sitemap():
     for url_data in urls:
         xml_content += '  <url>\n'
         xml_content += f'    <loc>{url_data["loc"]}</loc>\n'
-        if 'lastmod' in url_data:
-            xml_content += f'    <lastmod>{url_data["lastmod"]}</lastmod>\n'
-        if 'changefreq' in url_data:
-            xml_content += f'    <changefreq>{url_data["changefreq"]}</changefreq>\n'
-        if 'priority' in url_data:
-            xml_content += f'    <priority>{url_data["priority"]}</priority>\n'
+        xml_content += f'    <lastmod>{url_data["lastmod"]}</lastmod>\n'
+        xml_content += f'    <changefreq>{url_data["changefreq"]}</changefreq>\n'
+        xml_content += f'    <priority>{url_data["priority"]}</priority>\n'
         xml_content += '  </url>\n'
     xml_content += '</urlset>\n'
 
