@@ -15,6 +15,38 @@
     <meta name="twitter:title" content="{{ product.name }}">
     <meta name="twitter:description" content="{{ product.description | striptags | truncate(150, True, '...') }}">
     <meta name="twitter:image" content="{{ product.image_urls[0] if product.image_urls else 'https://placehold.co/1200x630/cccccc/333333?text=Gambar+Produk' }}"> {# Ambil gambar pertama #}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "{{ product.name }}",
+      "image": [
+        {% for image_url in product.image_urls %}
+          "{{ image_url }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      "description": "{{ product.description | striptags | replace('"', "'") }}",
+      "brand": {
+        "@type": "Brand",
+        "name": "Eksashop"
+      },
+      {% if reviews %}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ reviews | map(attribute='rating') | sum / reviews | length if reviews else 5 }}",
+        "reviewCount": "{{ reviews | length }}"
+      },
+      {% endif %}
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ request.url }}",
+        "priceCurrency": "IDR",
+        "price": "{{ product.price }}",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition"
+      }
+    }
+    </script>
 {% endblock %}
 
 {% block content %}

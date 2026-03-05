@@ -1,0 +1,24 @@
+# Eksashop (https://www.eksashop.web.id/)
+> Solusi Digital Terintegrasi: Jasa Pembuatan Website, Produk Digital, dan Media Edukasi Interaktif.
+
+## Profil Layanan
+Eksashop adalah platform penyedia layanan teknologi yang berfokus pada digitalisasi bisnis UMKM dan personal branding melalui:
+- **Website Services**: Pengembangan landing page, company profile, dan sistem web kustom menggunakan framework modern (Flask/Python).
+- **Digital Products**: Penjualan aset digital berkualitas yang sudah terkurasi.
+- **Interactive Learning**: Fitur kuis interaktif untuk meningkatkan engagement pengguna dan media edukasi.
+
+## Struktur Navigasi Penting
+- **Utama**: https://www.eksashop.web.id/
+- **Katalog Produk**: https://www.eksashop.web.id/product
+- **Layanan Jasa**: https://www.eksashop.web.id/website_services
+- **Blog & Edukasi**: https://www.eksashop.web.id/blog
+- **Kuis Interaktif**: https://www.eksashop.web.id/quiz
+- **Bantuan & Kontak**: https://www.eksashop.web.id/contact
+
+## Kebijakan & Keamanan
+- **Ads.txt**: Terdaftar dan diotorisasi oleh Google AdSense per 5 Mar 2026.
+- **Sitemap**: https://www.eksashop.web.id/sitemap.xml (Status: Sukses/Valid).
+- **Privasi**: Kami menjamin keamanan data pengguna sesuai standar Privacy Policy yang berlaku.
+
+## Target Audiens
+Pemilik bisnis, pengembang web pemula, dan pelajar yang mencari referensi kuis atau produk digital berkualitas.

@@ -8,11 +8,39 @@
     <meta property="og:description" content="{{ post.content | striptags | truncate(150, True, '...') }}" />
     <meta property="og:image" content="{{ post.image_url if post.image_url else 'https://placehold.co/1200x630/cccccc/333333?text=Gambar+Produk' }}" />
     <meta property="og:url" content="{{ request.url }}" />
-    <meta property="og:type" content="blog" />
+    <meta property="og:type" content="article" />
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ post.title }}">
     <meta name="twitter:description" content="{{ post.content | striptags | truncate(150, True, '...') }}">
     <meta name="twitter:image" content="{{ post.image_url if post.image_url else 'https://placehold.co/1200x630/cccccc/333333?text=Gambar+Produk' }}">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "{{ post.title }}",
+      "description": "{{ post.content | striptags | truncate(160) | replace('"', "'") }}",
+      "image": "{{ post.image_url if post.image_url else 'https://www.eksashop.web.id/static/img/default-blog.jpg' }}",
+      "author": {
+        "@type": "Person",
+        "name": "Eksashop Admin",
+        "url": "https://www.eksashop.web.id/about"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Eksashop",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.eksashop.web.id/static/img/logo.jpg"
+        }
+      },
+      "datePublished": "{{ post.created_at.strftime('%Y-%m-%d') if post.created_at else '2026-03-05' }}",
+      "dateModified": "{{ post.updated_at.strftime('%Y-%m-%d') if post.updated_at else post.created_at.strftime('%Y-%m-%d') if post.created_at else '2026-03-05' }}",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ request.url }}"
+      }
+    }
+    </script>
 {% endblock %}
 
 {% macro render_comments(comments, post_id, is_user_logged_in) %}

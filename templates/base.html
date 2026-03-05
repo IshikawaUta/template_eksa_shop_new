@@ -39,6 +39,39 @@
     <link rel="canonical" href="https://www.eksashop.web.id/" />
 
     {% block head %}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Eksa Shop",
+          "url": "https://www.eksashop.web.id/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.eksashop.web.id/product?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+        </script>
+
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Eksa Shop",
+          "url": "https://www.eksashop.web.id/",
+          "logo": "https://res.cloudinary.com/dzsqaauqn/image/upload/v1759515072/Gemini_Generated_Image_ty15obty15obty15_tyesh1.jpg",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+62895701060973",
+            "contactType": "customer service"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/in/ishikawa-uta",
+            "https://github.com/IshikawaUta",
+            "https://www.instagram.com/eksa_shop09"
+          ]
+        }
+        </script>
         {# Ini adalah blok khusus untuk meta tag Open Graph/Twitter #}
         {% block head_meta %}
             {# Konten untuk Open Graph dan Twitter meta tags akan dimasukkan di sini oleh template anak #}

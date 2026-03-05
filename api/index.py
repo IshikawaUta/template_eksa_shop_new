@@ -247,6 +247,10 @@ BLOG_PER_PAGE = 6
 def ads():
     return send_from_directory('static', 'ads.txt')
 
+@app.route('/llms.txt')
+def llms_txt():
+    return send_from_directory('static', 'llms.txt')
+
 @app.route('/')
 @cache.cached(timeout=2)
 def index():
